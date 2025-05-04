@@ -1,0 +1,4 @@
+requests
+openstacksdk
+Flask
+google-generativeai
