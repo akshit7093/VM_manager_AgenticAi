@@ -17,7 +17,7 @@ from typing import Dict, Any, List, Optional, Callable
 # --- Configuration ---
 # IMPORTANT: Set your Google API Key as an environment variable
 # export GOOGLE_API_KEY="YOUR_API_KEY"
-GOOGLE_API_KEY = "AIzaSyChSRoo-5yi4ksr7DiKFXXutMsPEGxlYJA"
+GOOGLE_API_KEY = "AIzaSyDliV4c1vzNd2NJ_06lwLaYybLgg8QgA0M"
 
 if not GOOGLE_API_KEY:
     print("Error: GOOGLE_API_KEY environment variable not set.")

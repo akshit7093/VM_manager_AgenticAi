@@ -1,4 +1,6 @@
 requests
 openstacksdk
 Flask
+Flask-CORS
+rich
 google-generativeai

@@ -154,91 +154,97 @@ class OpenStackAgent:
                 
         return missing
         
-    def _prompt_for_parameters(self, missing_params: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
-        """Interactively prompts user for missing parameter values."""
-        collected_params = {}
-        for param_name, details in missing_params.items():
-            while True:
-                prompt = f"Please enter {param_name} ({details.get('type', 'string')}): "
-                value = input(prompt).strip()
-                if value:
-                    collected_params[param_name] = value
-                    break
-                print(f"Error: {param_name} is required.")
-        return collected_params
+    def _get_missing_parameters_response(self, missing_params: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+        """Generates a response indicating missing parameters for the API."""
+        return {
+            "status": "missing_parameters",
+            "missing_parameters": missing_params
+        }
 
-    def _prompt_for_parameters(self, missing_params: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
-        """Prompts the user to provide values for missing parameters."""
-        collected_params = {}
-        print("\nPlease provide the following information:")
-        for name, details in missing_params.items():
-            while True:
-                value = input(f"  - {name} (Type: {details['type']}): ")
-                # Basic type validation could be added here if needed
-                if value: # Ensure some input is given
-                    collected_params[name] = value
-                    break
-                else:
-                    print("  Input cannot be empty.")
-        return collected_params
-
-    def execute_command(self, user_query: str):
-        """Parses the user query and executes the corresponding OpenStack command."""
+    def execute_command(self, user_query: str, is_web: bool = False):
+        """Parses the user query and executes the corresponding OpenStack command.
+        If is_web is True, returns a dictionary response instead of printing.
+        """
         parsed_intent = self._parse_user_query_with_ai(user_query)
 
         if not parsed_intent or parsed_intent['function_name'] == 'clarify':
-            print("Could not understand the request or required clarification. Please try again with more details.")
-            return
+            if is_web:
+                return {"status": "clarification_needed", "message": "Could not understand the request or required clarification. Please try again with more details.", "user_query": user_query}
+            else:
+                print("Could not understand the request or required clarification. Please try again with more details.")
+                return
 
         function_name = parsed_intent['function_name']
         provided_params = parsed_intent.get('parameters', {})
-        
+
         # Special validation for volume creation
         if function_name == 'create_volume' and 'size_gb' not in provided_params:
-            print("Error: Volume creation requires 'size_gb' parameter. Please specify volume size.")
-            return
+            if is_web:
+                return {"status": "error", "message": "Volume creation requires 'size_gb' parameter. Please specify volume size.", "missing_parameters": {"size_gb": {"type": "int", "required": True, "default": None}}}
+            else:
+                print("Error: Volume creation requires 'size_gb' parameter. Please specify volume size.")
+                return
 
         if function_name not in self.api_methods:
-            print(f"Error: The identified function '{function_name}' is not a valid OpenStack operation.")
-            print("Available functions are:", list(self.api_methods.keys()))
-            return
+            error_msg = f"Error: The identified function '{function_name}' is not a valid OpenStack operation."
+            if is_web:
+                return {"status": "error", "message": error_msg, "available_functions": list(self.api_methods.keys())}
+            else:
+                print(error_msg)
+                print("Available functions are:", list(self.api_methods.keys()))
+                return
 
         # Check for missing required parameters
         missing_params = self._get_missing_parameters(function_name, provided_params)
         if missing_params:
-            print(f"Missing required parameters for '{function_name}': {list(missing_params.keys())}")
-            
-            # For server creation, suggest listing available networks if network_name is missing
-            if function_name == 'create_server' and 'network_name' in missing_params:
-                print("\nTip: You can see available networks by running 'list networks' first.")
-                
-            additional_params = self._prompt_for_parameters(missing_params)
-            provided_params.update(additional_params)
-            # Re-check if still missing (user might have entered empty strings)
-            if self._get_missing_parameters(function_name, provided_params):
-                 print("Error: Still missing required parameters after prompting. Aborting.")
-                 return
+            if is_web:
+                return {"status": "missing_parameters", "function_name": function_name, "missing_parameters": missing_params}
+            else:
+                print(f"Missing required parameters for '{function_name}': {list(missing_params.keys())}")
+
+                # For server creation, suggest listing available networks if network_name is missing
+                if function_name == 'create_server' and 'network_name' in missing_params:
+                    print("\nTip: You can see available networks by running 'list networks' first.")
+
+                additional_params = self._prompt_for_parameters(missing_params)
+                provided_params.update(additional_params)
+                # Re-check if still missing (user might have entered empty strings)
+                if self._get_missing_parameters(function_name, provided_params):
+                     print("Error: Still missing required parameters after prompting. Aborting.")
+                     return
 
         # Get the actual function object from OpenStackAPI
         func_to_call: Optional[Callable] = getattr(self.openstack_api, function_name, None)
 
         if not func_to_call or not callable(func_to_call):
-            print(f"Internal Error: Could not find callable method '{function_name}' in OpenStackAPI.")
-            return
+            error_msg = f"Internal Error: Could not find callable method '{function_name}' in OpenStackAPI."
+            if is_web:
+                 return {"status": "error", "message": error_msg}
+            else:
+                print(error_msg)
+                return
 
         # Special validation for create_server - check network exists
         if function_name == 'create_server' and 'network_name' in provided_params:
             networks = self.openstack_api.list_networks()
             network_names = [n['name'] for n in networks]
             if provided_params['network_name'] not in network_names:
-                print(f"Error: Network '{provided_params['network_name']}' not found. Available networks: {network_names}")
-                return
-                
+                error_msg = f"Error: Network '{provided_params['network_name']}' not found. Available networks: {network_names}"
+                if is_web:
+                    return {"status": "error", "message": error_msg, "available_networks": network_names}
+                else:
+                    print(error_msg)
+                    return
+
         # Special validation for volume creation - check size_gb exists
         if function_name == 'create_volume':
             if 'size_gb' not in provided_params:
-                print("Error: Volume creation requires 'size_gb' parameter. Please specify volume size.")
-                return
+                error_msg = "Error: Volume creation requires 'size_gb' parameter. Please specify volume size."
+                if is_web:
+                    return {"status": "error", "message": error_msg, "missing_parameters": {"size_gb": {"type": "int", "required": True, "default": None}}}
+                else:
+                    print(error_msg)
+                    return
             # Ensure size_gb is properly passed to the function
             if isinstance(provided_params['size_gb'], str):
                 try:
@@ -250,8 +256,12 @@ class OpenStackAgent:
                     if provided_params['size_gb'] <= 0:
                         raise ValueError("Volume size must be greater than 0")
                 except ValueError as e:
-                    print(f"Error: Invalid volume size - {e}")
-                    return
+                    error_msg = f"Error: Invalid volume size - {e}"
+                    if is_web:
+                        return {"status": "error", "message": error_msg}
+                    else:
+                        print(error_msg)
+                        return
 
         # Prepare arguments for the function call, ensuring correct types if possible
         # Basic type conversion (more robust needed for production)
@@ -288,8 +298,12 @@ class OpenStackAgent:
         try:
             # Ensure connection before calling
             if not self.openstack_api._ensure_connection():
-                print("Failed to connect to OpenStack. Cannot execute command.")
-                return
+                error_msg = "Failed to connect to OpenStack. Cannot execute command."
+                if is_web:
+                    return {"status": "error", "message": error_msg}
+                else:
+                    print(error_msg)
+                    return
 
             result = func_to_call(**final_args)
             print("\n--- Execution Result ---")
@@ -301,10 +315,20 @@ class OpenStackAgent:
                 print(result)
             print("--- End Result ---")
 
+            if is_web:
+                return {"status": "success", "result": result}
+            else:
+                return result # CLI mode might not need explicit return value handling here
+
         except Exception as e:
-            print(f"\n--- Error during execution of {function_name} ---")
-            print(f"Error: {e}")
-            print("--- End Error ---")
+            error_msg = f"Error during execution of {function_name}: {e}"
+            if is_web:
+                return {"status": "error", "message": error_msg}
+            else:
+                print(f"\n--- Error during execution of {function_name} ---")
+                print(f"Error: {e}")
+                print("--- End Error ---")
+                return
 
 # --- Main Interaction Loop ---
 
