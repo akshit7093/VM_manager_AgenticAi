@@ -188,8 +188,8 @@ OpenStack-AI-Command-Center/
 ### 1. 📥 Clone Repository
 
 ```bash
-git clone <repository-url>
-cd openstack-ai-command-center
+git clone https://github.com/akshit7093/VM_manager_AgenticAi.git
+cd VM_manager_AgenticAi
 ```
 
 ### 2. 🐍 Backend Setup
@@ -700,10 +700,6 @@ We welcome contributions! Please follow these guidelines:
 - 🧪 **Testing**: Unit tests and integration tests
 - 🚀 **Performance**: Optimization and caching
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🙏 Acknowledgments
 
 - **Google Gemini AI** for advanced natural language processing
@@ -715,9 +711,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For support and questions:
 
-- 📧 **Email**: [your-email@domain.com]
-- 💬 **Issues**: [GitHub Issues](https://github.com/your-username/openstack-ai-command-center/issues)
-- 📖 **Documentation**: [Project Wiki](https://github.com/your-username/openstack-ai-command-center/wiki)
+- 📧 **Email**: [akshitsharma7093@gmail.com]
+- 💬 **Issues**: [GitHub Issues](https://github.com/akshit7093/VM_manager_AgenticAi/issues)
+- 📖 **Documentation**: [Project Wiki](https://github.com/akshit7093/VM_manager_AgenticAi/wiki)
 
 ---
 
