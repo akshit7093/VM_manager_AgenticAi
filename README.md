@@ -77,7 +77,7 @@ OpenStack management traditionally requires:
 ## 📁 Project Structure
 
 ```
-OpenStack-AI-Command-Center/
+VM_manager_AgenticAi/
 ├── 🤖 Core AI Components
 │   ├── agent.py                 # Google Gemini-powered AI agent
 │   ├── agent_original.py        # Original agent implementation
@@ -569,8 +569,8 @@ CMD ["python", "routes.py"]
 
 ```bash
 # Build and run
-docker build -t openstack-ai-command-center .
-docker run -p 5001:5001 --env-file .env openstack-ai-command-center
+docker build -t VM_manager_AgenticAi .
+docker run -p 5001:5001 --env-file .env VM_manager_AgenticAi
 ```
 
 #### Using systemd (Linux)
@@ -584,9 +584,9 @@ After=network.target
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/openstack-ai-command-center
-Environment=PATH=/opt/openstack-ai-command-center/venv/bin
-ExecStart=/opt/openstack-ai-command-center/venv/bin/python routes.py
+WorkingDirectory=/opt/VM_manager_AgenticAi
+Environment=PATH=/opt/VM_manager_AgenticAi/venv/bin
+ExecStart=/opt/VM_manager_AgenticAi/venv/bin/python routes.py
 Restart=always
 
 [Install]
