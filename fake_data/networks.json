@@ -1,0 +1,14 @@
+[
+    {
+        "id": "network1",
+        "name": "private-net1",
+        "status": "ACTIVE",
+        "subnets": ["subnet1"]
+    },
+    {
+        "id": "network2",
+        "name": "private-net2",
+        "status": "ACTIVE",
+        "subnets": ["subnet1"]
+    }
+]

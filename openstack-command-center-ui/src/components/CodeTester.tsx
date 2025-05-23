@@ -14,21 +14,50 @@ resize vm test-vm to medium`);
 
   const runCode = () => {
     setIsLoading(true);
+    
+    // Mock command processor
+    const processCommand = (cmd: string) => {
+      const commands = cmd.split('\n').filter(line => line.trim() && !line.trim().startsWith('//'));
+      let output = '';
+      
+      commands.forEach(command => {
+        output += `> ${command}\n`;
+        
+        if (command.toLowerCase().includes('list all servers') || command.toLowerCase().includes('sare dikha')) {
+          output += `ID: 1, Name: vm-alpha, Status: ACTIVE, Image: Ubuntu 20.04\n`;
+          output += `ID: 2, Name: vm-beta, Status: BUILD, Image: CentOS 8\n`;
+          output += `ID: 3, Name: vm-gamma, Status: ACTIVE, Image: Debian 11\n\n`;
+        } 
+        else if (command.toLowerCase().includes('create new vm') || command.toLowerCase().includes('banaye naya vm')) {
+          const vmName = command.match(/name (\S+)/i)?.[1] || 'test-vm';
+          const image = command.match(/image (\S+)/i)?.[1] || 'ubuntu';
+          const flavor = command.match(/flavor (\S+)/i)?.[1] || 'm1.small';
+          output += `Creating VM '${vmName}' with ${image} image and ${flavor} flavor...\n`;
+          output += `VM created successfully!\n`;
+          output += `ID: ${Math.floor(Math.random() * 1000)}, Name: ${vmName}, Status: ACTIVE, Image: ${image}, Flavor: ${flavor}\n\n`;
+        }
+        else if (command.toLowerCase().includes('resize vm') || command.toLowerCase().includes('badle size')) {
+          const vmName = command.match(/vm (\S+)/i)?.[1] || 'test-vm';
+          const flavor = command.match(/to (\S+)/i)?.[1] || 'medium';
+          output += `Resizing VM '${vmName}' to flavor '${flavor}'...\n`;
+          output += `VM successfully resized!\n\n`;
+        }
+        else if (command.toLowerCase().includes('network dikha') || command.toLowerCase().includes('sare network')) {
+          output += `ID: 1, Name: default, Status: ACTIVE\n`;
+          output += `ID: 2, Name: private, Status: ACTIVE\n`;
+          output += `ID: 3, Name: public, Status: DOWN\n\n`;
+        }
+        else {
+          output += `Command executed successfully.\n\n`;
+        }
+      });
+      
+      return output;
+    };
+    
     // Simulate execution with a timed response
     setTimeout(() => {
-      setOutput(`> list all servers
-ID: 1, Name: vm-alpha, Status: ACTIVE, Image: Ubuntu 20.04
-ID: 2, Name: vm-beta, Status: BUILD, Image: CentOS 8
-
-> create new vm with name test-vm image ubuntu
-Creating VM 'test-vm' with Ubuntu image...
-VM created successfully!
-ID: 3, Name: test-vm, Status: ACTIVE, Image: Ubuntu 20.04
-
-> resize vm test-vm to medium
-Resizing VM 'test-vm'...
-VM successfully resized to flavor 'medium'
-`);
+      setOutput(processCommand(code));
       setIsLoading(false);
     }, 1500);
   };

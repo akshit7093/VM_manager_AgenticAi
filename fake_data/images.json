@@ -1,0 +1,16 @@
+[
+    {
+        "id": "image1",
+        "name": "Ubuntu",
+        "status": "active",
+        "size": 1073741824,
+        "created_at": "2023-01-01T00:00:00Z"
+    },
+    {
+        "id": "image2",
+        "name": "Windows",
+        "status": "active",
+        "size": 1073741824,
+        "created_at": "2023-01-01T00:00:00Z"
+    }
+]

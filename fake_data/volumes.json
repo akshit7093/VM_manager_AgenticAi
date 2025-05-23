@@ -1,0 +1,53 @@
+[
+    {
+        "id": "vol1",
+        "name": "vol-1",
+        "status": "available",
+        "size": 50,
+        "attachments": []
+    },
+    {
+        "id": "f90ba908-0b05-4a8b-9745-a573cef4025e",
+        "name": "test1-boot-volume",
+        "status": "in-use",
+        "size": 10,
+        "attachments": [
+            {
+                "server_id": "854753b2-6d83-4f2f-9ee6-6013b2c937cf"
+            }
+        ]
+    },
+    {
+        "id": "e1ee52ba-d1d8-4842-ab3a-972b5dadaf82",
+        "name": "test1-boot-volume",
+        "status": "in-use",
+        "size": "20",
+        "attachments": [
+            {
+                "server_id": "2c6290b6-0c18-4905-9418-976acd359b8f"
+            }
+        ]
+    },
+    {
+        "id": "f2bee3d3-b24e-40de-808c-08d240d4fb31",
+        "name": "Matrix7-boot-volume",
+        "status": "in-use",
+        "size": "10",
+        "attachments": [
+            {
+                "server_id": "b2498329-9e63-48d8-8dad-8227f8c8f6de"
+            }
+        ]
+    },
+    {
+        "id": "54afedaa-4d84-4830-8405-8b0badd29b14",
+        "name": "test-02-boot-volume",
+        "status": "in-use",
+        "size": 10,
+        "attachments": [
+            {
+                "server_id": "0d8efabc-428e-43db-a0f2-21f5e3f42153"
+            }
+        ]
+    }
+]

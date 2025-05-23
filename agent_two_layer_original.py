@@ -18,7 +18,7 @@ from typing import Dict, Any, List, Optional, Callable
 # --- Configuration ---
 # IMPORTANT: Set your Google API Key as an environment variable
 # export GOOGLE_API_KEY="YOUR_API_KEY"
-GOOGLE_API_KEY = "AIzaSyDliV4c1vzNd2NJ_06lwLaYybLgg8QgA0M" # User's provided key
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 
 # Default parameters for certain operations if user inputs 'default'
 DEFAULT_PARAMS_MAP = {

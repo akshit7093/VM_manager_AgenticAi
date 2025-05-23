@@ -40,7 +40,3 @@
 .read-the-docs {
   color: #888;
 }
-.bg-gray-900 {
-  --tw-bg-opacity: 0;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-}

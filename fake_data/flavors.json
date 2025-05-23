@@ -1,0 +1,18 @@
+[
+    {
+        "id": "flavor1",
+        "name": "S.4",
+        "vcpus": 1,
+        "ram": 2048,
+        "disk": 20,
+        "is_public": true
+    },
+    {
+        "id": "flavor2",
+        "name": "C.8",
+        "vcpus": 1,
+        "ram": 2048,
+        "disk": 20,
+        "is_public": true
+    }
+]

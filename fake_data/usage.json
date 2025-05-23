@@ -1,0 +1,67 @@
+{
+    "project_usage": {
+        "cores": {"used": 4, "quota": 10},
+        "ram (MB)": {"used": 8192, "quota": 16384},
+        "instances": {"used": 4, "quota": 5},
+        "volumes": {"used": 4, "quota": 10},
+        "gigabytes": {"used": 200, "quota": 1000}
+    },
+    "servers_usage": [
+        {
+            "id": "server1",
+            "name": "fake-server-1",
+            "status": "ACTIVE",
+            "created_at": "2023-05-19T12:00:00Z",
+            "flavor": {
+                "name": "m1.small",
+                "id": "flavor1",
+                "vcpus": 1,
+                "ram": 2048,
+                "disk": 20
+            },
+            "volumes": []
+        },
+        {
+            "id": "server2",
+            "name": "dev-server-2",
+            "status": "SHUTOFF",
+            "created_at": "2023-08-01T08:30:00Z",
+            "flavor": {
+                "name": "m1.medium",
+                "id": "flavor2",
+                "vcpus": 2,
+                "ram": 4096,
+                "disk": 40
+            },
+            "volumes": ["volume2"]
+        },
+        {
+            "id": "server3",
+            "name": "web-server-3",
+            "status": "ACTIVE",
+            "created_at": "2024-01-15T17:45:00Z",
+            "flavor": {
+                "name": "m1.large",
+                "id": "flavor3",
+                "vcpus": 1,
+                "ram": 1024,
+                "disk": 60
+            },
+            "volumes": ["volume3"]
+        },
+        {
+            "id": "server4",
+            "name": "db-server-4",
+            "status": "ACTIVE",
+            "created_at": "2024-11-02T09:10:00Z",
+            "flavor": {
+                "name": "m1.small",
+                "id": "flavor1",
+                "vcpus": 1,
+                "ram": 1024,
+                "disk": 30
+            },
+            "volumes": ["volume4"]
+        }
+    ]
+}

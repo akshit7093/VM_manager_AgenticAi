@@ -478,83 +478,86 @@ class OpenStackAPI:
             server_id_or_name: Optional server ID or name to get specific usage
         
         Returns:
-            Dictionary with usage statistics
+            - No identifier: returns dict with 'project_usage' and 'servers_usage' list.
+            - 'project'/'project_usage': returns {'project_usage': ...}.
+            - Matching server: returns {'project_usage': ..., 'server_usage': ...}.
+            - Not found: {'error': '... not found'}.
         """
         if not self._ensure_connection():
-            return {}
-        
-        result = {'project_usage': {}, 'server_usage': {}}
-        
-        try:
-            # Get project limits
-            limits = self.conn.compute.get_limits().absolute
-            pu = {
-                'cores':    ('totalCoresUsed', 'maxTotalCores'),
-                'ram (MB)': ('totalRAMUsed', 'maxTotalRAMSize'),
-                'instances':('totalInstancesUsed', 'maxTotalInstances'),
-                'volumes':  ('totalVolumesUsed', 'maxTotalVolumes'),
-                'gigabytes':('totalGigabytesUsed', 'maxTotalVolumeGigabytes'),
+            return {'error': 'Connection not available'}
+
+        # Build project usage
+        limits = self.conn.compute.get_limits().absolute
+        pu_keys = {
+            'cores':    ('totalCoresUsed', 'maxTotalCores'),
+            'ram (MB)': ('totalRAMUsed', 'maxTotalRAMSize'),
+            'instances':('totalInstancesUsed', 'maxTotalInstances'),
+            'volumes':  ('totalVolumesUsed', 'maxTotalVolumes'),
+            'gigabytes':('totalGigabytesUsed', 'maxTotalVolumeGigabytes'),
+        }
+        project_usage = {}
+        for label, (used_key, max_key) in pu_keys.items():
+            project_usage[label] = {
+                'used': getattr(limits, used_key, limits.get(used_key, 'N/A')),
+                'quota': getattr(limits, max_key, limits.get(max_key, 'N/A'))
             }
-            
-            # Add project usage to result
-            for label, (used_key, max_key) in pu.items():
-                result['project_usage'][label] = {
-                    'used': limits.get(used_key, 'N/A'),
-                    'quota': limits.get(max_key, 'N/A')
-                }
-            
-            # Get server-specific usage if requested
-            if server_id_or_name:
-                server = self.conn.compute.find_server(server_id_or_name)
-                if server:
-                    server = self.conn.compute.get_server(server.id)
-                    server_usage = {
-                        'id': server.id,
-                        'name': server.name,
-                        'status': server.status,
-                        'created_at': server.created_at if hasattr(server, 'created_at') else None,
-                        'networks': getattr(server, 'networks', {})
+
+        # No identifier: return project + all servers
+        if not server_id_or_name:
+            servers_usage = []
+            for srv in self.conn.compute.servers():
+                full = self.conn.compute.get_server(srv.id)
+                servers_usage.append({
+                    'id': full.id,
+                    'name': full.name,
+                    'status': full.status,
+                    'created_at': getattr(full, 'created_at', None),
+                    'networks': getattr(full, 'networks', {})
+                })
+            return {'project_usage': project_usage, 'servers_usage': servers_usage}
+
+        # Project-only request
+        if server_id_or_name.lower() in ('project', 'project_usage'):
+            return {'project_usage': project_usage}
+
+        # Server-specific request
+        server_ref = self.conn.compute.find_server(server_id_or_name)
+        if server_ref:
+            s = self.conn.compute.get_server(server_ref.id)
+            server_usage = {
+                'id': s.id,
+                'name': s.name,
+                'status': s.status,
+                'created_at': getattr(s, 'created_at', None),
+                'networks': getattr(s, 'networks', {})
+            }
+            # Flavor details
+            if hasattr(s, 'flavor') and s.flavor:
+                fid = s.flavor.get('id')
+                try:
+                    f = self.conn.compute.get_flavor(fid)
+                    server_usage['flavor'] = {
+                        'id': f.id, 'name': f.name,
+                        'vcpus': f.vcpus, 'ram': f.ram, 'disk': f.disk
                     }
-                    
-                    # Get flavor details
-                    if hasattr(server, 'flavor'):
-                        flavor_id = server.flavor.get('id')
-                        if flavor_id:
-                            try:
-                                flavor = self.conn.compute.get_flavor(flavor_id)
-                                server_usage['flavor'] = {
-                                    'name': flavor.name,
-                                    'id': flavor.id,
-                                    'vcpus': flavor.vcpus,
-                                    'ram': flavor.ram,
-                                    'disk': flavor.disk
-                                }
-                            except Exception:
-                                server_usage['flavor'] = {'id': flavor_id}
-                    
-                    # Get volume details
-                    if hasattr(server, 'attached_volumes') and server.attached_volumes:
-                        server_usage['volumes'] = []
-                        for att in server.attached_volumes:
-                            try:
-                                vol = self.conn.block_storage.get_volume(att.get('id'))
-                                server_usage['volumes'].append({
-                                    'id': vol.id,
-                                    'name': vol.name,
-                                    'size': vol.size,
-                                    'status': vol.status
-                                })
-                            except Exception:
-                                continue
-                    
-                    result['server_usage'] = server_usage
-                else:
-                    result['server_usage'] = {'error': f"Server '{server_id_or_name}' not found"}
-            
-            return result
-        except Exception as e:
-            print(f"Error getting usage statistics: {e}")
-            return {'error': str(e)}
+                except Exception:
+                    server_usage['flavor'] = {'id': fid}
+            # Volume details
+            vols = []
+            for att in getattr(s, 'attached_volumes', []):
+                vid = att.get('id')
+                if vid:
+                    try:
+                        v = self.conn.block_storage.get_volume(vid)
+                        vols.append({'id': v.id, 'name': v.name, 'size': v.size, 'status': v.status})
+                    except Exception:
+                        continue
+            server_usage['volumes'] = vols
+
+            return {'project_usage': project_usage, 'server_usage': server_usage}
+
+        # Not found
+        return {'error': f"'{server_id_or_name}' not found"}
 
 
 def prompt_for_server_creation(api: OpenStackAPI) -> Optional[Dict[str, Any]]:

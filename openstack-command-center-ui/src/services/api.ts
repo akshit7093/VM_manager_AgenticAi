@@ -1,14 +1,17 @@
-
 import { toast } from "@/components/ui/use-toast";
 
-const API_BASE_URL = "http://localhost:5000"; // Update this to your actual API base URL
+const API_BASE_URL = "http://localhost:5000";
 
 export interface CommandResponse {
-  status: string;
+  status: string; // 'success', 'error', 'missing_parameters', 'confirmation_required', 'info'
   output?: string[];
   raw_output?: string;
-  understood_command?: string; // Added for AI's interpretation
+  understood_command?: string;
   error?: string;
+  missing_params?: string[] | Record<string, any>;
+  message?: string;
+  action_details?: string;
+  confirmation_id?: string;
 }
 
 export interface StatusResponse {
@@ -18,98 +21,107 @@ export interface StatusResponse {
   error?: string;
 }
 
-// Send a command to the OpenStack agent
-export const sendCommand = async (query: string): Promise<CommandResponse> => {
+export const sendCommand = async (
+  query: string,
+  additionalParams?: Record<string, any>
+): Promise<CommandResponse> => {
   try {
-    // Removed client-side empty command check; let backend handle it.
+    const payload: { query: string; params?: Record<string, any> } = { query };
+    if (additionalParams) {
+      payload.params = additionalParams;
+    }
 
-    const response = await fetch(`${API_BASE_URL}/api/command`, { // Endpoint changed to /api/command
+    const response = await fetch(`${API_BASE_URL}/api/command`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ query: query }), // Payload key changed to query
+      body: JSON.stringify(payload),
     });
 
-    const data = await response.json(); // data will be { result: ... } or { error: ... }
+    const data = await response.json();
 
-    if (!response.ok) { // Handles non-2xx responses, data should be { error: ... }
-      throw new Error(data.error || "An unexpected error occurred while processing the command.");
+    if (!response.ok && !data.status) {
+      throw new Error(data.error || data.message || `Request failed with status ${response.status}`);
     }
 
-    // If response is ok, data is { result: ActualBackendOutput }
-    const backendResult = data.result;
+    // Handle both 2xx and non-2xx responses with valid status
+    let finalResponse: CommandResponse;
 
-    // Map backendResult to CommandResponse structure
-    let finalResponse: CommandResponse = { status: "success" };
+    if (data.status === "confirmation_required" || data.status === "missing_parameters") {
+      // Direct response with status (e.g., confirmation_required, missing_parameters)
+      finalResponse = data as CommandResponse;
+    } else if (response.ok && data.result) {
+      // Successful response with result
+      const backendResult = data.result;
 
-    if (typeof backendResult === 'object' && backendResult !== null && !Array.isArray(backendResult)) {
-      // This is the case where backendResult is an object, potentially containing output, raw_output, and understood_command.
-      if (backendResult.understood_command && typeof backendResult.understood_command === 'string') {
-        finalResponse.understood_command = backendResult.understood_command;
-      }
-
-      if (Array.isArray(backendResult.output)) {
-        finalResponse.output = backendResult.output.map(item =>
-          typeof item === 'string' ? item : JSON.stringify(item, null, 2)
-        );
-      } else if (typeof backendResult.raw_output === 'string') {
-        finalResponse.raw_output = backendResult.raw_output;
+      if (typeof backendResult === 'object' && backendResult !== null && backendResult.status) {
+        finalResponse = { ...backendResult } as CommandResponse;
+        if (backendResult.output && Array.isArray(backendResult.output)) {
+          finalResponse.output = backendResult.output.map(String);
+        } else if (backendResult.raw_output && typeof backendResult.raw_output !== 'string') {
+          finalResponse.raw_output = String(backendResult.raw_output);
+        }
       } else {
-        // If neither .output nor .raw_output is directly present,
-        // stringify the remaining parts of backendResult (if any) as raw_output,
-        // excluding already processed fields.
-        const otherData = { ...backendResult };
-        delete otherData.understood_command;
-        delete otherData.output;
-        delete otherData.raw_output;
-
-        if (Object.keys(otherData).length > 0) {
-          finalResponse.raw_output = JSON.stringify(otherData, null, 2);
+        finalResponse = { status: "success" };
+        if (typeof backendResult === 'object' && backendResult !== null) {
+          if (backendResult.understood_command) {
+            finalResponse.understood_command = String(backendResult.understood_command);
+          }
+          if (Array.isArray(backendResult.output)) {
+            finalResponse.output = backendResult.output.map(String);
+          } else if (backendResult.raw_output !== undefined) {
+            finalResponse.raw_output = String(backendResult.raw_output);
+          } else {
+            const otherData = { ...backendResult };
+            delete otherData.understood_command;
+            if (Object.keys(otherData).length > 0) {
+              finalResponse.raw_output = JSON.stringify(otherData, null, 2);
+            }
+          }
+        } else if (typeof backendResult === 'string') {
+          finalResponse.raw_output = backendResult;
+        } else if (Array.isArray(backendResult)) {
+          finalResponse.output = backendResult.map(String);
+        } else if (backendResult === null || backendResult === undefined) {
+          finalResponse.raw_output = "Command executed successfully. No output.";
+        } else {
+          finalResponse.raw_output = String(backendResult);
         }
       }
-    } else if (typeof backendResult === 'string') {
-      finalResponse.raw_output = backendResult;
-    } else if (Array.isArray(backendResult)) {
-      finalResponse.output = backendResult.map(item =>
-        typeof item === 'string' ? item : JSON.stringify(item, null, 2)
-      );
-    } else if (backendResult === null || backendResult === undefined) {
-      // Explicitly no output from backend
-      finalResponse.raw_output = "Command executed successfully. No output.";
     } else {
-      // For other primitive types like boolean or number
-      finalResponse.raw_output = String(backendResult);
+      throw new Error("Unexpected response format from backend.");
     }
 
-    // Ensure a default message if no output fields were populated but the command was successful
+    // Ensure default output for edge cases
     if (finalResponse.status === "success" && !finalResponse.output && !finalResponse.raw_output && !finalResponse.error) {
-      if (finalResponse.understood_command) {
-        finalResponse.raw_output = "Command processed."; // If understood_command is present, this is a minimal confirmation.
-      } else {
+      if (finalResponse.understood_command && Object.keys(finalResponse).length === 2) {
+        finalResponse.raw_output = "Command processed.";
+      } else if (Object.keys(finalResponse).length === 1 && finalResponse.status === "success") {
         finalResponse.raw_output = "Command executed successfully. No specific output provided.";
       }
     }
-    
+
     return finalResponse;
+
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Network error. Please check your connection and try again.";
-    console.error("Command error:", errorMessage);
-    
+    console.error("Command error:", errorMessage, error);
+
     toast({
       title: "Command Error",
       description: errorMessage,
       variant: "destructive",
     });
-    
+
     return {
       status: "error",
       error: errorMessage,
+      message: errorMessage,
     };
   }
 };
 
-// Get the status of the API and OpenStack connection
 export const getStatus = async (): Promise<StatusResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/status`, {

@@ -1,0 +1,72 @@
+[
+    {
+        "id": "server2",
+        "name": "fake-server-1",
+        "status": "ACTIVE",
+        "created": "2023-05-19T12:00:00Z",
+        "flavor": {
+            "id": "flavor1",
+            "name": "m1.medium"
+        },
+        "image": {
+            "id": "image1"
+            
+        },
+        "networks": {
+            "private-net": [
+                "192.168.1.100"
+            ]
+        }
+    },
+    {
+        "id": "854753b2-6d83-4f2f-9ee6-6013b2c937cf",
+        "name": "test1",
+        "status": "ACTIVE",
+        "created": "2025-05-19T17:02:21.062819",
+        "flavor": {
+            "id": "flavor1"
+        },
+        "image": {
+            "id": "image1"
+        },
+        "networks": {
+            "private-net": [
+                "192.168.2.100"
+            ]
+        }
+    },
+    {
+        "id": "2c6290b6-0c18-4905-9418-976acd359b8f",
+        "name": "test1",
+        "status": "ACTIVE",
+        "created": "2025-05-19T20:30:28.696632",
+        "flavor": {
+            "id": "flavor1"
+        },
+        "image": {
+            "id": "image1"
+        },
+        "networks": {
+            "private-net": [
+                "192.168.3.100"
+            ]
+        }
+    },
+    {
+        "id": "b2498329-9e63-48d8-8dad-8227f8c8f6de",
+        "name": "Matrix7",
+        "status": "ACTIVE",
+        "created": "2025-05-20T12:25:31.285335",
+        "flavor": {
+            "id": "flavor1"
+        },
+        "image": {
+            "id": "image1"
+        },
+        "networks": {
+            "private-net": [
+                "192.168.4.100"
+            ]
+        }
+    }
+]
