@@ -1,5 +1,5 @@
 # Gemini-Powered OpenStack AI Agent
-
+h
 An AI-driven assistant that enables **natural language control** of your **OpenStack infrastructure** using **Google Gemini**. This project empowers developers and cloud admins to interact with OpenStack through conversational commands, reducing the complexity of direct API or CLI usage.
 
 # [Demo](https://drive.google.com/drive/folders/1-i7_EgWivs9o_x47rCEhc3jaIqW0Yeuh?usp=drive_link)
@@ -9,16 +9,16 @@ An AI-driven assistant that enables **natural language control** of your **OpenS
 
 ```bash
 AIML-007/
-├── apis/
-│   └── main.py 
-│   └── routes.py
-    └── schemas.py
-├── core/
-│   ├── openstack_api.py
-├── agent.py
-├── cli.py 
-├── requirements.txt
-└── README.md
+âââ apis/
+â   âââ main.py 
+â   âââ routes.py
+    âââ schemas.py
+âââ core/
+â   âââ openstack_api.py
+âââ agent.py
+âââ cli.py 
+âââ requirements.txt
+âââ README.md
 ```
 
 
@@ -61,17 +61,17 @@ With the help of Google Gemini's **function calling** feature and OpenStack's SD
 
 ```plaintext
 User Prompt
-   │
-   ▼
+   â
+   â¼
 Gemini API (LLM)
-   │
-   ▼
+   â
+   â¼
 Function Tool Selection (core logic)
-   │
-   ▼
+   â
+   â¼
 OpenStack SDK / HTTP API
-   │
-   ▼
+   â
+   â¼
 Execution & Response
 ```
 
@@ -139,7 +139,7 @@ Sample Interaction:
 
 ```
 User: "List all servers in the project"
-Gemini → OpenStack: list_servers()
+Gemini â OpenStack: list_servers()
 Output: { 'vm1': 'ACTIVE', 'vm2': 'SHUTOFF' }
 ```
 
@@ -150,7 +150,7 @@ Output: { 'vm1': 'ACTIVE', 'vm2': 'SHUTOFF' }
 ### Create a Server
 
 **Prompt:**  
-> "create an S.4 VM named dev-box-2 using Ubuntu-24.04 on External_Net with volume 10"
+> "create an S.4 VM named dev-box-2 using Ubuntu-24.04 onÂ External_Net with volume 10"
 
 **Mapped Function Call:**
 
@@ -165,7 +165,7 @@ Output: { 'vm1': 'ACTIVE', 'vm2': 'SHUTOFF' }
 
 ---
 
-### 🔹 Resize the flovor
+### ð¹ Resize the flovor
 
 **Prompt:**  
 > "Resize the instance <id> to C.4"
@@ -199,7 +199,7 @@ Map it to a real implementation in your function handler.
 ## Security
 
 - Keep your API keys safe using `.env` or secret managers.
-- Restrict Gemini’s API scope to relevant permissions.
+- Restrict Geminiâs API scope to relevant permissions.
 - Avoid exposing sensitive logs publicly.
 
 ---
