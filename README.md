@@ -2,12 +2,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![OpenStack SDK];(https://img.shields.io/badge/OpenStack-SDK-red.svg)](https://docs.openstack.org/openstacksdk/)
+[![OpenStack SDK](https://img.shields.io/badge/OpenStack-SDK-red.svg)](https://docs.openstack.org/openstacksdk/)
 [![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-green.svg)](https://ai.google.dev/)
 
 A next-generation **AI-powered OpenStack management platform** that revolutionizes cloud infrastructure operations through natural language processing, intelligent automation, and modern web interfaces. Built with Google Gemini AI, this system transforms complex OpenStack operations into simple conversational commands.
 
-## ð¯ Project Overview
+## 🎯 Project Overview
 
 The OpenStack AI Command Center bridges the gap between complex cloud infrastructure management and user-friendly interaction paradigms. By leveraging cutting-edge AI technology and modern web development practices, it provides an intuitive, efficient, and scalable solution for OpenStack resource management.
 
@@ -18,39 +18,39 @@ The OpenStack AI Command Center bridges the gap between complex cloud infrastruc
 - **Production-ready architecture** with mock testing capabilities
 - **Modern React-based UI** with shadcn/ui components and TypeScript
 
-## ð Features
+## 🚀 Features
 
 ### Core Capabilities
-- **ð¤ AI-Powered Natural Language Processing**: Convert plain English commands into OpenStack operations using Google Gemini
-- **ð¯ Intelligent Command Interpretation**: Advanced context understanding with parameter extraction and validation
-- **â¡ Real-time Execution**: Instant processing and execution of cloud infrastructure commands
-- **ð Interactive Workflows**: Smart parameter collection with user confirmation for critical operations
-- **ð Comprehensive Resource Management**: Full CRUD operations for VMs, networks, volumes, and storage
-- **ð¡ï¸ Security-First Design**: Environment-based credential management and secure API interactions
+- **🤖 AI-Powered Natural Language Processing**: Convert plain English commands into OpenStack operations using Google Gemini
+- **🎯 Intelligent Command Interpretation**: Advanced context understanding with parameter extraction and validation
+- **⚡ Real-time Execution**: Instant processing and execution of cloud infrastructure commands
+- **🔄 Interactive Workflows**: Smart parameter collection with user confirmation for critical operations
+- **📊 Comprehensive Resource Management**: Full CRUD operations for VMs, networks, volumes, and storage
+- **🛡️ Security-First Design**: Environment-based credential management and secure API interactions
 
 ### Technical Features
-- **ðï¸ Modular Architecture**: Clean separation between AI agent, API layer, and OpenStack integration
-- **ð§ª Mock Testing Environment**: Complete fake API implementation for development and testing
-- **ð± Modern Web Interface**: React + TypeScript frontend with shadcn/ui components
-- **ð RESTful API**: Well-documented endpoints for seamless integration
-- **ð Scalable Design**: Built for enterprise-grade OpenStack deployments
-- **ð Rich Logging**: Comprehensive logging and error handling for debugging
+- **🏗️ Modular Architecture**: Clean separation between AI agent, API layer, and OpenStack integration
+- **🧪 Mock Testing Environment**: Complete fake API implementation for development and testing
+- **📱 Modern Web Interface**: React + TypeScript frontend with shadcn/ui components
+- **🔌 RESTful API**: Well-documented endpoints for seamless integration
+- **📈 Scalable Design**: Built for enterprise-grade OpenStack deployments
+- **🔍 Rich Logging**: Comprehensive logging and error handling for debugging
 
-## ðï¸ Architecture Overview
+## 🏛️ Architecture Overview
 
 The OpenStack AI Command Center follows a modern, microservices-inspired architecture:
 
 ```
-âââââââââââââââââââ    ââââââââââââââââââââ    âââââââââââââââââââ
-â   Frontend UI   â    â   Backend API    â    â  OpenStack API  â
-â   (React/TS)    âââââºâ   (Flask/CORS)   âââââºâ   (Real/Mock)    â
-âââââââââââââââââââ    ââââââââââââââââââââ    âââââââââââââââââââ
-                              â
-                              â¼
-                       ââââââââââââââââââââ
-                       â   AI Agent       â
-                       â (Google Gemini)  â
-                       ââââââââââââââââââââ
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Frontend UI   │    │   Backend API    │    │  OpenStack API  │
+│   (React/TS)    │◄──►│   (Flask/CORS)   │◄──►│   (Real/Mock)    │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                              │
+                              ▼
+                       ┌──────────────────┐
+                       │   AI Agent       │
+                       │ (Google Gemini)  │
+                       └──────────────────┘
 ```
 
 ### Component Breakdown
@@ -60,7 +60,7 @@ The OpenStack AI Command Center follows a modern, microservices-inspired archite
 - **Frontend Interface**: Modern React application with TypeScript
 - **Data Layer**: JSON-based mock data for testing scenarios
 
-## ð¡ The Challenge We Solve
+## 💡 The Challenge We Solve
 
 OpenStack management traditionally requires:
 - **Complex API Knowledge**: Understanding intricate service interactions
@@ -69,63 +69,63 @@ OpenStack management traditionally requires:
 - **Steep Learning Curve**: Months of training for effective usage
 
 ### Our Solution
-- **Natural Language Interface**: "Create a Ubuntu VM with 4GB RAM" â Executed
+- **Natural Language Interface**: "Create a Ubuntu VM with 4GB RAM" → Executed
 - **Intelligent Automation**: Smart parameter defaults and validation
 - **User-Friendly Web UI**: Point-and-click operations for common tasks
 - **Comprehensive Testing**: Mock environment for safe experimentation
 
-## ð Project Structure
+## 📁 Project Structure
 
 ```
 VM_manager_AgenticAi/
-âââ ð¤ Core AI Components
-â   âââ agent.py                 # Google Gemini-powered AI agent
-â   âââ agent_original.py        # Original agent implementation
-â   âââ agent_two_layer_original.py # Alternative agent architecture
-â
-âââ ð Backend API
-â   âââ routes.py               # Flask REST API endpoints
-â   âââ app.py                  # Main Flask application
-â   âââ runner.py               # Application runner
-â
-âââ âï¸ OpenStack Integration
-â   âââ api.py                  # Real OpenStack API wrapper
-â   âââ fake_api.py             # Mock OpenStack implementation
-â   âââ openstack_manager.py    # Core OpenStack operations
-â   âââ test_openstack_api.py   # API connectivity tests
-â
-âââ ð¨ Frontend Application
-â   âââ openstack-command-center-ui/
-â       âââ src/
-â       â   âââ components/      # Reusable UI components
-â       â   âââ pages/          # Application pages
-â       â   âââ services/       # API service layer
-â       â   âââ hooks/          # Custom React hooks
-â       â   âââ lib/            # Utility libraries
-â       âââ package.json        # Node.js dependencies
-â       âââ vite.config.ts      # Vite build configuration
-â       âââ tailwind.config.ts  # Tailwind CSS configuration
-â
-âââ ð Mock Data & Testing
-â   âââ fake_data/
-â       âââ servers.json        # Mock server instances
-â       âââ flavors.json        # VM flavor definitions
-â       âââ images.json         # OS image catalog
-â       âââ networks.json       # Network configurations
-â       âââ volumes.json        # Storage volumes
-â       âââ usage.json          # Resource usage data
-â
-âââ ð§ Configuration
-â   âââ requirements.txt        # Python dependencies
-â   âââ chatbot_config.json     # AI agent configuration
-â   âââ .gitignore             # Git ignore rules
-â
-âââ ð Documentation
-    âââ README.md              # This file
-    âââ frontend.md            # Frontend documentation
+├── 🤖 Core AI Components
+│   ├── agent.py                 # Google Gemini-powered AI agent
+│   ├── agent_original.py        # Original agent implementation
+│   └── agent_two_layer_original.py # Alternative agent architecture
+│
+├── 🌐 Backend API
+│   ├── routes.py               # Flask REST API endpoints
+│   ├── app.py                  # Main Flask application
+│   └── runner.py               # Application runner
+│
+├── ☁️ OpenStack Integration
+│   ├── api.py                  # Real OpenStack API wrapper
+│   ├── fake_api.py             # Mock OpenStack implementation
+│   ├── openstack_manager.py    # Core OpenStack operations
+│   └── test_openstack_api.py   # API connectivity tests
+│
+├── 🎨 Frontend Application
+│   └── openstack-command-center-ui/
+│       ├── src/
+│       │   ├── components/      # Reusable UI components
+│       │   ├── pages/          # Application pages
+│       │   ├── services/       # API service layer
+│       │   ├── hooks/          # Custom React hooks
+│       │   └── lib/            # Utility libraries
+│       ├── package.json        # Node.js dependencies
+│       ├── vite.config.ts      # Vite build configuration
+│       └── tailwind.config.ts  # Tailwind CSS configuration
+│
+├── 📊 Mock Data & Testing
+│   └── fake_data/
+│       ├── servers.json        # Mock server instances
+│       ├── flavors.json        # VM flavor definitions
+│       ├── images.json         # OS image catalog
+│       ├── networks.json       # Network configurations
+│       ├── volumes.json        # Storage volumes
+│       └── usage.json          # Resource usage data
+│
+├── 🔧 Configuration
+│   ├── requirements.txt        # Python dependencies
+│   ├── chatbot_config.json     # AI agent configuration
+│   └── .gitignore             # Git ignore rules
+│
+└── 📚 Documentation
+    ├── README.md              # This file
+    └── frontend.md            # Frontend documentation
 ```
 
-### ð Key Components
+### 🔑 Key Components
 
 #### AI Agent (`agent.py`)
 - **Google Gemini Integration**: Advanced natural language processing
@@ -150,7 +150,7 @@ VM_manager_AgenticAi/
 - **Vite Build System**: Fast development and optimized production builds
 - **Tailwind CSS**: Utility-first styling framework
 
-## ð ï¸ Technology Stack
+## 🛠️ Technology Stack
 
 ### Backend Technologies
 - **Python 3.8+**: Core programming language
@@ -176,7 +176,7 @@ VM_manager_AgenticAi/
 - **ESLint**: Code quality and consistency
 - **PostCSS**: CSS processing and optimization
 
-## ð Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
@@ -185,14 +185,14 @@ VM_manager_AgenticAi/
 - **Google API Key** for Gemini integration
 - **OpenStack Environment** (optional - can use mock mode)
 
-### 1. ð¥ Clone Repository
+### 1. 📥 Clone Repository
 
 ```bash
 git clone https://github.com/akshit7093/VM_manager_AgenticAi.git
 cd VM_manager_AgenticAi
 ```
 
-### 2. ð Backend Setup
+### 2. 🐍 Backend Setup
 
 #### Create Virtual Environment
 ```bash
@@ -231,12 +231,12 @@ OS_INTERFACE=public
 OS_IDENTITY_API_VERSION=3
 ```
 
-**ð Getting Google API Key:**
+**🔑 Getting Google API Key:**
 1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Create a new API key
 3. Copy the key to your `.env` file
 
-### 3. ð¨ Frontend Setup
+### 3. 🎨 Frontend Setup
 
 ```bash
 cd openstack-command-center-ui
@@ -250,7 +250,7 @@ yarn install
 cd ..
 ```
 
-### 4. ð§ª Development Mode (Recommended)
+### 4. 🧪 Development Mode (Recommended)
 
 For development and testing, the system uses mock OpenStack data by default:
 
@@ -259,7 +259,7 @@ For development and testing, the system uses mock OpenStack data by default:
 # No additional OpenStack setup required
 ```
 
-### 5. ð§ Production Configuration
+### 5. 🔧 Production Configuration
 
 For production use with real OpenStack:
 
@@ -274,19 +274,19 @@ For production use with real OpenStack:
    python test_openstack_api.py
    ```
 
-### 6. â Verify Installation
+### 6. ✅ Verify Installation
 
 ```bash
 # Test Python dependencies
-python -c "import flask, google.generativeai, openstacksdk; print('â Backend dependencies OK')"
+python -c "import flask, google.generativeai, openstacksdk; print('✅ Backend dependencies OK')"
 
 # Test frontend dependencies
 cd openstack-command-center-ui && npm list --depth=0
 ```
 
-## ð® Usage Guide
+## 🎮 Usage Guide
 
-### ð Starting the Application
+### 🚀 Starting the Application
 
 #### 1. Start Backend Services
 
@@ -322,7 +322,7 @@ The frontend will be available at:
 - **Web UI**: `http://localhost:3000`
 - **Development Tools**: Hot reload enabled
 
-### ð¬ Natural Language Commands
+### 💬 Natural Language Commands
 
 The AI agent understands various natural language patterns:
 
@@ -360,7 +360,7 @@ The AI agent understands various natural language patterns:
 "Attach volume backup-storage to web-server-01"
 ```
 
-### ð Web Interface Usage
+### 🌐 Web Interface Usage
 
 1. **Dashboard**: Overview of all OpenStack resources
 2. **VM Management**: Create, list, and manage virtual machines
@@ -368,7 +368,7 @@ The AI agent understands various natural language patterns:
 4. **Storage Console**: Manage volumes and snapshots
 5. **AI Chat**: Interactive natural language interface
 
-### ð§ API Integration
+### 🔧 API Integration
 
 For programmatic access, use the REST API endpoints:
 
@@ -523,7 +523,7 @@ For programmatic access, use the REST API endpoints:
 
    To run the system without a live OpenStack environment, ensure the agent and backend are configured to use `fake_api.py`. This is typically handled through configuration settings or environment variables.
 
-### ð§ª Testing & Development
+### 🧪 Testing & Development
 
 #### Mock Environment Testing
 ```bash
@@ -547,7 +547,7 @@ curl -X POST http://localhost:5001/api/command \
   -d '{"command": "list all servers"}'
 ```
 
-## ð Deployment
+## 🚀 Deployment
 
 ### Production Deployment
 
@@ -616,7 +616,7 @@ npm run build
 # Build output will be in dist/ directory
 ```
 
-## ð§ Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
@@ -665,7 +665,7 @@ python routes.py
 - **Consolidated Logs**: `consolidated_chatbot.log`
 - **Frontend Logs**: Browser developer console
 
-## ð¤ Contributing
+## 🤝 Contributing
 
 We welcome contributions! Please follow these guidelines:
 
@@ -693,28 +693,28 @@ We welcome contributions! Please follow these guidelines:
 
 ### Areas for Contribution
 
-- ð¤ **AI Agent Improvements**: Enhanced natural language understanding
-- ð¨ **UI/UX Enhancements**: Better user interface design
-- ð§ **OpenStack Integration**: Support for additional services
-- ð **Documentation**: Improved guides and examples
-- ð§ª **Testing**: Unit tests and integration tests
-- ð **Performance**: Optimization and caching
+- 🤖 **AI Agent Improvements**: Enhanced natural language understanding
+- 🎨 **UI/UX Enhancements**: Better user interface design
+- 🔧 **OpenStack Integration**: Support for additional services
+- 📚 **Documentation**: Improved guides and examples
+- 🧪 **Testing**: Unit tests and integration tests
+- 🚀 **Performance**: Optimization and caching
 
-## ð Acknowledgments
+## 🙏 Acknowledgments
 
 - **Google Gemini AI** for advanced natural language processing
 - **OpenStack Foundation** for the comprehensive cloud platform
 - **React Community** for the excellent frontend ecosystem
 - **Flask Community** for the lightweight web framework
 
-## ð Support
+## 📞 Support
 
 For support and questions:
 
-- ð§ **Email**: [akshitsharma7093@gmail.com]
-- ð¬ **Issues**: [GitHub Issues](https://github.com/akshit7093/VM_manager_AgenticAi/issues)
-- ð **Documentation**: [Project Wiki](https://github.com/akshit7093/VM_manager_AgenticAi/wiki)
+- 📧 **Email**: [akshitsharma7093@gmail.com]
+- 💬 **Issues**: [GitHub Issues](https://github.com/akshit7093/VM_manager_AgenticAi/issues)
+- 📖 **Documentation**: [Project Wiki](https://github.com/akshit7093/VM_manager_AgenticAi/wiki)
 
 ---
 
-**Made with â¤ï¸ for the OpenStack community**
+**Made with ❤️ for the OpenStack community**
