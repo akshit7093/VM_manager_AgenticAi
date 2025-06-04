@@ -712,6 +712,7 @@ We welcome contributions! Please follow these guidelines:
 For support and questions:
 
 - 📧 **Email**: [akshitsharma7093@gmail.com]
+- 📧 **Email**: [ayangairola41@gmail.com]
 - 💬 **Issues**: [GitHub Issues](https://github.com/akshit7093/VM_manager_AgenticAi/issues)
 - 📖 **Documentation**: [Project Wiki](https://github.com/akshit7093/VM_manager_AgenticAi/wiki)
 
