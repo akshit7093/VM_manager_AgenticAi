@@ -1,6 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "http://localhost:5001";
 
 export interface CommandResponse {
   status: string; // 'success', 'error', 'missing_parameters', 'confirmation_required', 'info'

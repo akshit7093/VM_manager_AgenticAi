@@ -13,6 +13,8 @@ import inspect
 import google.generativeai as genai
 from api import OpenStackAPI  # Import the OpenStack API class
 from typing import Dict, Any, List, Optional, Callable
+from dotenv import load_dotenv
+load_dotenv()
 
 # --- Configuration ---
 # IMPORTANT: Set your Google API Key as an environment variable

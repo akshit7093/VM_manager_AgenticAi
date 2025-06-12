@@ -1,0 +1,12 @@
+2025-06-05 11:01:15,186 - INFO - Command: create a new server named xdd with image Ubuntu with flavor S.4 | Success
+2025-06-05 11:02:46,830 - INFO - Command: clear | Success
+2025-06-05 11:49:15,887 - INFO - Command: list all servers | Success
+2025-06-05 11:50:09,881 - INFO - Command: bhai ek kaam kar ek naya server bana with name xdd2 flavor is S.4 and network is private-net1 with image Ubuntu of size 12GB | Success
+2025-06-05 11:50:35,081 - INFO - Command: sabki usage dede | Success
+2025-06-05 11:50:44,355 - INFO - Command: get usage | Success
+2025-06-05 12:11:29,946 - INFO - Command: [A[A[A[B[B[B | Success
+2025-06-05 12:11:57,773 - INFO - Command: show details of server with ID 13947054-27eb-49f5-9230-6c13949e5c93 | Success
+2025-06-05 12:14:37,076 - INFO - Command: create a new server named xdd3 with image Ubuntu flavour S.4 and network private-net1 with size 10GB | Success
+2025-06-05 12:15:07,341 - INFO - Command: delete server with id 0768dd99-2004-4481-988f-797615e89269 | Success
+2025-06-05 12:19:38,957 - INFO - Command: create network of name private-net3 | Success
+2025-06-05 12:21:04,501 - INFO - Command: update the flavour of server 42997e9d-9175-477b-bfb4-45a0a962fed4 to C.8 | Success

@@ -328,46 +328,39 @@ def run_cli(remote_url=None):
             logging.critical(f"Fatal error: {e}")
 
 
+# Replace the run_web() function in both files with:
+
 def run_web():
-    app = Flask(__name__)
-    CORS(app)
+    from fastapi import FastAPI, HTTPException
+    from fastapi.middleware.cors import CORSMiddleware
+    from pydantic import BaseModel
+    
+    app = FastAPI()
+    
+    # Enable CORS
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    
     agent = OpenStackAgent()
-
-    @app.route('/command', methods=['POST'])
-    def handle_command():
-        data = request.get_json()
-        if not data or 'command' not in data:
-            return jsonify({'error': 'Missing command in request body'}), 400
-        user_command = data['command']
+    
+    class CommandRequest(BaseModel):
+        command: str
+    
+    @app.post('/command')
+    async def handle_command(request: CommandRequest):
         try:
-            command_output = agent.process_user_query(user_command, is_web=True)
-            if isinstance(command_output, dict) and 'status' in command_output:
-                if command_output['status'] == 'success':
-                    return jsonify({'result': command_output.get('result')})
-                elif command_output['status'] == 'missing_parameters':
-                    return jsonify(command_output), 400
-                elif command_output['status'] == 'clarification_needed':
-                    return jsonify(command_output), 400
-                else:
-                    error_msg = command_output.get('message', 'An unknown error occurred in the agent.')
-                    logging.error(f"API Command: {user_command} | Agent Error: {error_msg}")
-                    return jsonify({'error': error_msg}), 500
-            else:
-                error_msg = "Unexpected response format from agent."
-                logging.error(f"API Command: {user_command} | Unexpected Agent Response: {command_output}")
-                return jsonify({'error': error_msg}), 500
+            command_output = agent.process_user_query(request.command, is_web=True)
+            return {"result": command_output}
         except Exception as e:
-            error_msg = str(e) or "Unknown error processing command."
-            logging.error(f"API Command: {user_command} | Error: {error_msg}")
-            return jsonify({'error': error_msg}), 500
-
-    console.print(Panel(Text("Starting Flask web server for OpenStack AI Agent...", style="bold blue"), title="Web Server Mode", border_style="blue"))
-    console.print(Text("API Endpoint available at ", style="green"), Text("/command", style="bold green"), Text(" (POST)", style="green"))
-    console.print(Text("Example usage with curl:", style="yellow"))
-    console.print(Text("curl -X POST -H \"Content-Type: application/json\" -d '{\"command\": \"list all servers\"}' http://localhost:5000/command", style="italic yellow"))
-    app.run(host='0.0.0.0', port=5000, debug=False)
-
-
+            raise HTTPException(status_code=500, detail=str(e))
+    
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5001)
 def main():
     parser = argparse.ArgumentParser(description="OpenStack AI Chatbot Assistant")
     parser.add_argument("mode", choices=["cli", "web"], default="cli", nargs="?", help="Run in CLI or web mode (local agent or server).")

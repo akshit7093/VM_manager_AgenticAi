@@ -3,12 +3,24 @@
         "id": "network1",
         "name": "private-net1",
         "status": "ACTIVE",
-        "subnets": ["subnet1"]
+        "subnets": [
+            "subnet1"
+        ]
     },
     {
         "id": "network2",
         "name": "private-net2",
         "status": "ACTIVE",
-        "subnets": ["subnet1"]
+        "subnets": [
+            "subnet1"
+        ]
+    },
+    {
+        "id": "efcb2020-a8b2-44da-a4e7-db505126bf44",
+        "name": "private-net3",
+        "status": "ACTIVE",
+        "subnets": [
+            "subnet-fa31fea7-b844-404e-96a7-bee445054843"
+        ]
     }
 ]

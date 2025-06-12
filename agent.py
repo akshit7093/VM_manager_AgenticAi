@@ -16,7 +16,9 @@ import google.generativeai as genai
 # from api import OpenStackAPI
 from fake_api import FakeOpenStackAPI as OpenStackAPI
 from typing import Dict, Any, List, Optional, Callable
+from dotenv import load_dotenv
 
+load_dotenv()
 # Configuration
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 

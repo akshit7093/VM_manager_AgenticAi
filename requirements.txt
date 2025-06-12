@@ -4,3 +4,4 @@ Flask
 Flask-CORS
 rich
 google-generativeai
+python-dotenv

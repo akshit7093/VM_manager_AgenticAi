@@ -2,6 +2,8 @@ import openstack
 import os
 import json
 import time
+from dotenv import load_dotenv
+load_dotenv()
 from openstack_manager import (
     create_server as manager_create_server,
     delete_server as manager_delete_server,
@@ -12,14 +14,13 @@ from openstack_manager import (
     create_network_with_subnet as manager_create_network_with_subnet
 )
 
-# OpenStack credentials (recommended to use environment variables)
-OS_AUTH_URL = os.environ.get("OS_AUTH_URL", "https://api-ap-south-mum-1.openstack.acecloudhosting.com:5000/v3")
-OS_USERNAME = os.environ.get("OS_USERNAME", "Hackathon_AIML_1")
-OS_PASSWORD = os.environ.get("OS_PASSWORD", "Hackathon_AIML_1@567")
-OS_PROJECT_NAME = os.environ.get("OS_PROJECT_NAME", "ACE_HACKATHON_AIML")
-OS_PROJECT_ID = os.environ.get("OS_PROJECT_ID", "a02b14bcfca64e44bd68f2d00d8555b5")
-OS_USER_DOMAIN_NAME = os.environ.get("OS_USER_DOMAIN_NAME", "Default")
-OS_PROJECT_DOMAIN_NAME = os.environ.get("OS_PROJECT_DOMAIN_NAME", "Default")
+OS_AUTH_URL = os.environ.get("OS_AUTH_URL")
+OS_USERNAME = os.environ.get("OS_USERNAME")
+OS_PASSWORD = os.environ.get("OS_PASSWORD")
+OS_PROJECT_NAME = os.environ.get("OS_PROJECT_NAME")
+OS_PROJECT_ID = os.environ.get("OS_PROJECT_ID")
+OS_USER_DOMAIN_NAME = os.environ.get("OS_USER_DOMAIN_NAME")
+OS_PROJECT_DOMAIN_NAME = os.environ.get("OS_PROJECT_DOMAIN_NAME")
 
 def connect_to_openstack():
     """Connects to OpenStack using openstacksdk."""
