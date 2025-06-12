@@ -49,5 +49,27 @@
                 "server_id": "0d8efabc-428e-43db-a0f2-21f5e3f42153"
             }
         ]
+    },
+    {
+        "id": "2a5c8cb7-07ae-431e-8ef4-2c0c89f90c56",
+        "name": "xdd-boot-volume",
+        "status": "in-use",
+        "size": "10",
+        "attachments": [
+            {
+                "server_id": "42997e9d-9175-477b-bfb4-45a0a962fed4"
+            }
+        ]
+    },
+    {
+        "id": "d04bbe64-7eec-4b55-9bcc-eb6ea9127978",
+        "name": "xdd2-boot-volume",
+        "status": "in-use",
+        "size": 12,
+        "attachments": [
+            {
+                "server_id": "13947054-27eb-49f5-9230-6c13949e5c93"
+            }
+        ]
     }
 ]

@@ -381,8 +381,8 @@ def run_web():
     console.print(Panel(Text("Starting Flask web server for OpenStack AI Agent...", style="cyan"), title="Web Server Mode"))
     console.print(Text("API Endpoint available at ", style="green"), Text("/command", style="bold green"), Text(" (POST)", style="green"))
     console.print(Text("Example usage with curl:", style="yellow"))
-    console.print(Text("curl -X POST -H \"Content-Type: application/json\" -d '{\"command\": \"list all servers\"}' http://localhost:5000/command", style="italic yellow"))
-    app.run(host='0.0.0.0', port=5000, debug=False) # Set debug=False for production/sharing
+    console.print(Text("curl -X POST -H \"Content-Type: application/json\" -d '{\"command\": \"list all servers\"}' http://localhost:5001/command", style="italic yellow"))
+    app.run(host='0.0.0.0', port=5001, debug=False) # Set debug=False for production/sharing
 
 def main():
     parser = argparse.ArgumentParser(description="OpenStack AI Chatbot Assistant")

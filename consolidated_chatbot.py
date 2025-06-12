@@ -93,7 +93,7 @@ def get_openstack_credentials():
     """Prompts user for OpenStack credentials if not found in environment."""
     console.print("[cyan]Checking OpenStack Credentials...[/cyan]")
     creds_definitions = [
-        ("OS_AUTH_URL", "OpenStack Authentication URL (e.g., http://controller:5000/v3)", None, True),
+        ("OS_AUTH_URL", "", None, True),
         ("OS_USERNAME", "OpenStack Username", None, True),
         ("OS_PASSWORD", "OpenStack Password", None, True),
         ("OS_PROJECT_NAME", "OpenStack Project Name", None, True),
@@ -1795,14 +1795,14 @@ def run_web():
     console.print(Panel(Text("Starting Flask web server for OpenStack AI Agent...", style="bold blue"), title="Web Server Mode", border_style="blue"))
     console.print(Text("API Endpoint available at ", style="green"), Text("/command", style="bold green"), Text(" (POST)", style="green"))
     console.print(Text("Example usage with curl:", style="yellow"))
-    console.print(Text("curl -X POST -H \"Content-Type: application/json\" -d '{\"command\": \"list all servers\"}' http://localhost:5000/command", style="italic yellow"))
+    console.print(Text("curl -X POST -H \"Content-Type: application/json\" -d '{\"command\": \"list all servers\"}' http://localhost:5001/command", style="italic yellow"))
     
     # Disable Flask's default logging to avoid duplicate messages if our logging is sufficient
     # Or configure Flask logging to integrate with our main logger
     log = logging.getLogger('werkzeug')
     log.setLevel(logging.WARNING) # Or ERROR, to reduce verbosity from HTTP requests
 
-    app.run(host='0.0.0.0', port=5000, debug=False) # debug=False for production/demonstration
+    app.run(host='0.0.0.0', port=5001, debug=False) # debug=False for production/demonstration
 
 # Main function (from runner.py)
 def main():
@@ -1810,7 +1810,7 @@ def main():
     parser.add_argument("mode", choices=["cli", "web"], default="cli", nargs="?", 
                         help="Run in CLI or web mode. Default: cli.")
     parser.add_argument("--remote-url", type=str, default=None, 
-                        help="URL of a remote OpenStack AI Agent API for the CLI to connect to (e.g., http://your-server:5000). This makes the CLI a client.")
+                        help="URL of a remote OpenStack AI Agent API for the CLI to connect to (e.g., http://your-server:5001). This makes the CLI a client.")
     # Add argument for GOOGLE_API_KEY if not set in environment
     parser.add_argument("--google-api-key", type=str, default=os.environ.get("GOOGLE_API_KEY"),
                         help="Google API Key for Gemini. Overrides GOOGLE_API_KEY environment variable if provided.")

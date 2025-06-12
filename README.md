@@ -219,7 +219,7 @@ Create a `.env` file in the project root:
 GOOGLE_API_KEY=your_google_api_key_here
 
 # OpenStack Configuration (Optional - for production use)
-OS_AUTH_URL=https://your-openstack-endpoint:5000/v3
+OS_AUTH_URL=https://your-openstack-endpoint:5001/v3
 OS_USERNAME=your_username
 OS_PASSWORD=your_password
 OS_PROJECT_NAME=your_project_name
@@ -600,7 +600,7 @@ WantedBy=multi-user.target
 FLASK_ENV=production
 FLASK_DEBUG=False
 GOOGLE_API_KEY=your_production_api_key
-OS_AUTH_URL=https://your-openstack.com:5000/v3
+OS_AUTH_URL=https://your-openstack.com:5001/v3
 # ... other OpenStack credentials
 ```
 

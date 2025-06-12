@@ -13,13 +13,13 @@ from typing import Optional, Tuple, Dict, Any, List
 
 # --- Load OpenStack Credentials ---
 # It's recommended to use environment variables
-OS_AUTH_URL = os.environ.get("OS_AUTH_URL", "")
-OS_USERNAME = os.environ.get("OS_USERNAME", "")
-OS_PASSWORD = os.environ.get("OS_PASSWORD", "")
-OS_PROJECT_NAME = os.environ.get("OS_PROJECT_NAME", "")
-OS_PROJECT_ID = os.environ.get("OS_PROJECT_ID", "")
-OS_USER_DOMAIN_NAME = os.environ.get("OS_USER_DOMAIN_NAME", "")
-OS_PROJECT_DOMAIN_NAME = os.environ.get("OS_PROJECT_DOMAIN_NAME", "")
+OS_AUTH_URL = os.environ.get("OS_AUTH_URL")
+OS_USERNAME = os.environ.get("OS_USERNAME")
+OS_PASSWORD = os.environ.get("OS_PASSWORD")
+OS_PROJECT_NAME = os.environ.get("OS_PROJECT_NAME")
+OS_PROJECT_ID = os.environ.get("OS_PROJECT_ID")
+OS_USER_DOMAIN_NAME = os.environ.get("OS_USER_DOMAIN_NAME")
+OS_PROJECT_DOMAIN_NAME = os.environ.get("OS_PROJECT_DOMAIN_NAME")
 
 
 class OpenStackAPI:

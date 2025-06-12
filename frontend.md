@@ -318,7 +318,7 @@ These examples illustrate common user interactions and system responses in more 
 
 ## 5. Setup and Running the Backend
 
-*   The backend Flask server (from `routes.py`) typically runs on `http://localhost:5000`.
+*   The backend Flask server (from `routes.py`) typically runs on `http://localhost:5001`.
 *   Ensure CORS is enabled on the backend (it is, via `flask_cors`) to allow requests from the frontend's origin (which might be different during development, e.g., `http://localhost:3000` for a React app).
 
 ## 6. Key Considerations
