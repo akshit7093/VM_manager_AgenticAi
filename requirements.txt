@@ -1,7 +1,8 @@
 requests
 openstacksdk
-Flask
-Flask-CORS
+FastAPI
+Flask-CORSs
 rich
 google-generativeai
 python-dotenv
+pymongos
